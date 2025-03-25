@@ -36,6 +36,29 @@ app.get('/api/usuarios', async (req, res) => {
   }
 });
 
-// Iniciar Servidor
+const http = require("http");
+const { Server } = require("socket.io");
+
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: "*",
+  },
+});
+
+io.on("connection", (socket) => {
+  console.log("🟢 Un usuario se ha conectado");
+
+  // Escuchar mensajes
+  socket.on("mensaje", (data) => {
+    console.log("Mensaje recibido:", data);
+    io.emit("mensaje", data); // Enviar el mensaje a todos
+  });
+
+  socket.on("disconnect", () => {
+    console.log("🔴 Un usuario se ha desconectado");
+  });
+});
+
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`🚀 Servidor en ejecución en el puerto ${PORT}`));
+server.listen(PORT, () => console.log(`🚀 Servidor en el puerto ${PORT}`));

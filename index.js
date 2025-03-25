@@ -21,6 +21,7 @@ async function connectToDB() {
   }
 }
 connectToDB();
+console.log("🔹 MONGODB_URI:", process.env.MONGODB_URI);
 
 // Rutas
 app.get('/api', (req, res) => res.json({ message: 'Bienvenido a la API' }));

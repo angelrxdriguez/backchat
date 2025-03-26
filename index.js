@@ -56,21 +56,12 @@ io.on("connection", (socket) => {
 
   socket.on("mensajePrivado", (data) => {
       console.log("Mensaje privado recibido:", data);
-      io.to(data.chatRoomId).emit("mensajePrivado", data); // Enviar solo dentro de la sala
+      io.to(data.chatRoomId).emit("mensajePrivado", data); 
   });
 
   socket.on("disconnect", () => {
       console.log("🔴 Un usuario se ha desconectado");
   });
-});
-
-socket.on("joinRoom", (chatRoomId) => {
-  if (!chatRoomId) {
-      console.log("Error: No se ha recibido un chatRoomId válido.");
-      return;
-  }
-  socket.join(chatRoomId);
-  console.log(`Usuario unido a la sala: ${chatRoomId}`);
 });
 
 const PORT = process.env.PORT || 4000;

@@ -64,6 +64,14 @@ io.on("connection", (socket) => {
   });
 });
 
+socket.on("joinRoom", (chatRoomId) => {
+  if (!chatRoomId) {
+      console.log("Error: No se ha recibido un chatRoomId válido.");
+      return;
+  }
+  socket.join(chatRoomId);
+  console.log(`Usuario unido a la sala: ${chatRoomId}`);
+});
 
 const PORT = process.env.PORT || 4000;
 server.listen(PORT, () => console.log(`🚀 Servidor en el puerto ${PORT}`));

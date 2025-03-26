@@ -49,16 +49,21 @@ const io = new Server(server, {
 io.on("connection", (socket) => {
   console.log("🟢 Un usuario se ha conectado");
 
-  // Escuchar mensajes
-  socket.on("mensaje", (data) => {
-    console.log("Mensaje recibido:", data);
-    io.emit("mensaje", data); // Enviar el mensaje a todos
+  socket.on("joinRoom", (chatRoomId) => {
+      socket.join(chatRoomId);
+      console.log(`Usuario unido a la sala: ${chatRoomId}`);
+  });
+
+  socket.on("mensajePrivado", (data) => {
+      console.log("Mensaje privado recibido:", data);
+      io.to(data.chatRoomId).emit("mensajePrivado", data); // Enviar solo dentro de la sala
   });
 
   socket.on("disconnect", () => {
-    console.log("🔴 Un usuario se ha desconectado");
+      console.log("🔴 Un usuario se ha desconectado");
   });
 });
+
 
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => console.log(`🚀 Servidor en el puerto ${PORT}`));
